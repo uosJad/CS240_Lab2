@@ -1,9 +1,13 @@
 /**
-	Int Array implemetation of sorting algorithms
+	Integer array implementation of sorting algorithms
 	@author Jason Wu
 */
 public class Sorting {
-	int[] arr;
+	private int[] arr;
+	private int maxSize = 10;
+	
+	//TODO implement initialization check
+	//private boolean intialized = false;
 	
 	public Sorting(int[] a){
 		arr = CopyArray(a);
@@ -19,33 +23,38 @@ public class Sorting {
 		return temp;
 	}
 	
+	/**
+	 * Applies an iterative implementation of selective sort to array
+	 * @return sorted array
+	 */
 	public int[] SelectiveSortIterative(){
-		//@SuppressWarnings("unchecked")
-		int[] temp = new int[arr.length];
+		int[] temp = CopyArray(arr);
+		
 		int least;
-		for (int i = 1; i < arr.length; i++){
+		for (int i = 1; i < temp.length; i++){
 			least = i;
 			
-			for (int j = i; j < arr.length; j++){
+			for (int j = i; j < temp.length; j++){
 				// check all for least, swap least to i
 				if (arr[j] < least)
 					least = j;
 			}
 			if (i!=least)
-				swap(i,least);
-			
+				swap(temp,i,least);
 		}
 		
 		return temp;
 	}
 	
-	private void swap(int a, int b){
+	/**
+	 * Swaps the values of the current array at index a and b
+	 * @param array array to swap
+	 * @param a first index
+	 * @param b second index
+	 */
+	private void swap(int[] array, int a, int b){
 		int temp = arr[a];
 		arr[a] = arr[b];
 		arr[b] = temp;
 	}
-	
-	
-	
-	
 }
