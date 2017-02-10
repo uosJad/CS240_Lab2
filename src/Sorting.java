@@ -470,8 +470,79 @@ public class Sorting {
 		return QuickSortRecursive(temp, lower, upper);
 		
 	}
+
+	public int[] RadixSortIterative(){
+		int[] temp = CopyArray(arr);
+		int i = 1;
 		
+		while (i <= 100000){
+			temp = RadixSort(temp,i);
+			i*=10;
+		}
+		return temp;
+	}
 	
+	private int[] RadixSort(int[] t, int decimal){
+		int[] temp = new int[t.length];
+		int[] b = new int[10];
+		
+		int i = 0;
+
+		while (i < temp.length){
+			int digit = getDigit(t[i], decimal);
+			b[digit] += 1;
+			i++;
+		}
+		
+		i = 1;
+		while (i < b.length){
+			b[i] += b[i-1];
+			i++;
+		}
+		
+		i = t.length-1;
+		while (i >= 0){
+			int digit = getDigit(t[i], decimal); 
+			
+			temp[b[digit]-1] = t[i];
+			b[digit]--;
+			i--;
+		}
+		
+		return temp;
+	}
+	
+	public int[] RadixSortRecursive(){
+		return RadixSortRecursive(CopyArray(arr), 1);
+	}
+	
+	
+	public int[] RadixSortRecursive(int[] temp, int i){
+
+		
+		if (i <= 100000){
+			temp = RadixSort(temp,i);
+			i*=10;
+		}
+		else return temp;
+		
+		return RadixSortRecursive(temp, i);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private int getDigit(int n, int d){
+		return ((n/d)%10);
+	}
 	
 	
 	
