@@ -6,7 +6,8 @@ public class TestClass {
 	public static void main(String[] args) {
 		Sorting s = new Sorting(randomArray());
 		printArray(s.toArray());
-		printArray(s.ShellSortRecursive());
+		
+		printArray(s.MergeSortRecursive());
 		
 		
 		

@@ -33,6 +33,16 @@ public class Sorting {
 		return temp;
 	}
 	
+	public int[] CopyArray(int[] a, int low, int high) {
+		//@SuppressWarnings("unchecked")
+		//T[] temp = (T[])new Object[a.length];
+		int[] temp = new int[high-low];
+		for (int i = low; i < high; i++){
+			temp[i-low] = a[i];
+		}
+		return temp;
+	}
+	
 	/**
 	 * Applies an iterative implementation of selective sort to array
 	 * @return sorted array
@@ -246,8 +256,77 @@ public class Sorting {
 			return temp;
 		}
 		return ShellSortRecursive(temp, hib, e, count);
-		
 	}
+	
+	
+	
+	
+	/**
+	 * client use of recursive merge sort
+	 * @return copy of sorted array
+	 */
+	public int[] MergeSortRecursive(){
+		return MergeSortRecursive(CopyArray(arr));
+	}
+	
+	/**
+	 * implementation of recursive merge sort
+	 * @param temp array to sort
+	 * @return sorted array
+	 */
+	private int[] MergeSortRecursive(int[] temp){
+		if (temp.length <= 1)
+			return temp;
+		int[] a = CopyArray(temp,0,temp.length/2);
+		int[] b = CopyArray(temp,a.length, temp.length);
+		
+		//return sorted
+		return MergeArrays(MergeSortRecursive(a),MergeSortRecursive(b));
+	}
+	
+	/**
+	 * Merges arrays and sorts them, must insert sorted arrays first,iterative
+	 * @param a array1
+	 * @param b array 2
+	 * @return merged array
+	 */
+	public int[] MergeArrays(int[] a, int[] b){
+		int[] temp = new int[a.length + b.length];
+		int c1 = 0;
+		int c2 = 0;
+		int tempCount = 0;
+		
+		while (tempCount < temp.length){
+			if (c1 < a.length && c2 < b.length){
+				if (a[c1] < b[c2]){
+					temp[tempCount] = a[c1];
+					c1++;
+					tempCount++;
+				}
+				else if (a[c1] >= b[c2]){
+					temp[tempCount] = b[c2];
+					c2++;
+					tempCount++;
+				}
+			}
+			else if (c1 < a.length){
+				temp[tempCount] = a[c1];
+				c1++;
+				tempCount++;
+			}
+			else if (c2 < b.length){
+				temp[tempCount] = b[c2];
+				c2++;
+				tempCount++;
+			}
+			
+		}
+		
+		return temp;
+	}
+
+	
+	
 	
 	/**
 	 * Swaps the values of the current array at index a and b
