@@ -7,8 +7,8 @@ public class TestClass {
 		Sorting s = new Sorting(randomArray());
 		printArray(s.toArray());
 		
-		printArray(s.RadixSortRecursive());
-		
+		printArray(s.RadixSortIterative());
+		s.printCounts();
 		
 		
 		
@@ -18,7 +18,7 @@ public class TestClass {
 	}
 
 	public static int[] randomArray(){
-		int[] n = new int[10];
+		int[] n = new int[1000];
 		for (int  i = 0; i < n.length; i++){
 			n[i] = new Random().nextInt(1000);
 		}

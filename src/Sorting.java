@@ -5,6 +5,7 @@
 public class Sorting {
 	private int[] arr;
 	private int maxSize = 10;
+	private int countMove, countCompare;
 	
 	//TODO implement initialization check
 	//private boolean intialized = false;
@@ -48,6 +49,8 @@ public class Sorting {
 	 * @return sorted array
 	 */
 	public int[] SelectiveSortIterative(){
+		countMove = 0;
+		countCompare = 0;
 		int[] temp = CopyArray(arr);
 		
 		int least;
@@ -58,16 +61,26 @@ public class Sorting {
 				// check all for least, swap least to i
 				if (temp[j] < temp[least])
 					least = j;
-				System.out.println(temp[least]);
+				countCompare++;
 			}
 			
 			swap(temp,i,least);
+			countMove++;
+			
 		}
 		
+		printCounts();
 		return temp;
 	}
 	
+	public void printCounts(){
+		System.out.println("cm: "+ countMove + ", cc:" + countCompare);
+	}
 	
+	public void rc(){
+		countMove = 0;
+		countCompare = 0;
+	}
 	/**
 	 * User access version of SelectiveSortRecursive
 	 * @return copy of sorted array
@@ -114,18 +127,25 @@ public class Sorting {
 	 * @return copy of sorted array
 	 */
 	public int[] InsertionSortIterative(){
+		countMove = 0;
+		countCompare = 0;
 		int[] temp = CopyArray(arr);
 		int e;
 		for (int i = 1; i < temp.length; i++){
 			e = i;
 			for (int j = i-1; j >= 0; j--){
+				countCompare++;
 				if (temp[e] < temp[j]){
 					swap(temp,e,j);
+					countMove++;
 					e = j;
 				}
 				else break;
 			}
 		}
+		
+		printCounts();
+		
 		return temp;
 	}
 	
@@ -172,6 +192,8 @@ public class Sorting {
 	 * @return copy of sorted array
 	 */
 	public int[] ShellSortIterative(){
+		rc();
+		
 		int[] temp = CopyArray(arr);
 		
 		int hib = 0;
@@ -186,8 +208,10 @@ public class Sorting {
 		while (hib != 0){
 			
 			//if less, swap, else increase by 1. if increase is above length, refactor hib;
+			countCompare++;
 			if (e - hib >= 0 && temp[e] < temp[e-hib]){
 				swap(temp,e,e-hib);
+				countMove++;
 				e = e-hib;
 			}
 			else{ // if e is < 0 or if element is not less than
@@ -195,6 +219,7 @@ public class Sorting {
 				e = count;
 				
 				//go down one sequence
+				countCompare++;
 				if (count >= arr.length){
 					hib = (hib - 1)/2;
 					e = hib;
@@ -202,7 +227,7 @@ public class Sorting {
 				}
 			}
 		}
-		
+		printCounts();
 		return temp;
 	}
 	
@@ -263,6 +288,7 @@ public class Sorting {
 	 * @return copy of sorted array
 	 */
 	public int[] MergeSortIterative(){
+		rc();
 		return MergeSortIterative(CopyArray(arr));
 	}
 	
@@ -272,6 +298,7 @@ public class Sorting {
 	 * @return sorted array
 	 */
 	private int[] MergeSortIterative(int[] temp){
+		countCompare++;
 		if (temp.length <= 1)
 			return temp;
 		int[] a = CopyArray(temp,0,temp.length/2);
@@ -296,8 +323,10 @@ public class Sorting {
 	 * @return sorted array
 	 */
 	private int[] MergeSortRecursive(int[] temp){
-		if (temp.length <= 1)
+		if (temp.length <= 1){
 			return temp;
+		}
+		
 		int[] a = CopyArray(temp,0,temp.length/2);
 		int[] b = CopyArray(temp,a.length, temp.length);
 		
@@ -318,24 +347,33 @@ public class Sorting {
 		int tempCount = 0;
 		
 		while (tempCount < temp.length){
+			countCompare++;
 			if (c1 < a.length && c2 < b.length){
+				countCompare++;
 				if (a[c1] < b[c2]){
+					countMove++;
 					temp[tempCount] = a[c1];
 					c1++;
 					tempCount++;
 				}
 				else if (a[c1] >= b[c2]){
+					countCompare++;
+					countMove++;
 					temp[tempCount] = b[c2];
 					c2++;
 					tempCount++;
 				}
 			}
 			else if (c1 < a.length){
+				countCompare++;
+				countMove++;
 				temp[tempCount] = a[c1];
 				c1++;
 				tempCount++;
 			}
 			else if (c2 < b.length){
+				countCompare++;
+				countMove++;
 				temp[tempCount] = b[c2];
 				c2++;
 				tempCount++;
@@ -400,6 +438,7 @@ public class Sorting {
 	
 	
 	public int[] QuickSortIterative(){
+		rc();
 		return QuickSortIterative(CopyArray(arr), 0, arr.length-1);
 	}
 	
@@ -416,16 +455,19 @@ public class Sorting {
 				eUpper--;
 			}
 			
+			countCompare++;
 			if (eLower <= eUpper){ // if lower check is less than higher check, swap
 				swap(temp, eLower, eUpper);
+				countMove++;
 				eLower++;
 				eUpper--;
 			}
 			
 		}
-
+		countCompare++;
 		if (lower < eUpper)
 			QuickSortIterative(temp, lower, eUpper);
+		countCompare++;
 		if (eLower < upper)
 			QuickSortIterative(temp, eLower, upper);
 		
@@ -474,8 +516,9 @@ public class Sorting {
 	public int[] RadixSortIterative(){
 		int[] temp = CopyArray(arr);
 		int i = 1;
-		
+		rc();
 		while (i <= 100000){
+			
 			temp = RadixSort(temp,i);
 			i*=10;
 		}
@@ -489,22 +532,28 @@ public class Sorting {
 		int i = 0;
 
 		while (i < temp.length){
+			countCompare++;
 			int digit = getDigit(t[i], decimal);
 			b[digit] += 1;
+			countMove++;
 			i++;
 		}
 		
 		i = 1;
 		while (i < b.length){
+			countCompare++;
 			b[i] += b[i-1];
+			countMove++;
 			i++;
 		}
 		
 		i = t.length-1;
 		while (i >= 0){
+			countCompare++;
 			int digit = getDigit(t[i], decimal); 
 			
 			temp[b[digit]-1] = t[i];
+			countMove++;
 			b[digit]--;
 			i--;
 		}
@@ -529,22 +578,9 @@ public class Sorting {
 		return RadixSortRecursive(temp, i);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	private int getDigit(int n, int d){
 		return ((n/d)%10);
-	}
-	
-	
+	}	
 	
 	/**
 	 * Swaps the values of the current array at index a and b
