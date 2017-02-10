@@ -258,7 +258,28 @@ public class Sorting {
 		return ShellSortRecursive(temp, hib, e, count);
 	}
 	
+	/**
+	 * client use of iterative merge sort
+	 * @return copy of sorted array
+	 */
+	public int[] MergeSortIterative(){
+		return MergeSortIterative(CopyArray(arr));
+	}
 	
+	/**
+	 * implementation of iterative merge sort
+	 * @param temp array to sort
+	 * @return sorted array
+	 */
+	private int[] MergeSortIterative(int[] temp){
+		if (temp.length <= 1)
+			return temp;
+		int[] a = CopyArray(temp,0,temp.length/2);
+		int[] b = CopyArray(temp,a.length, temp.length);
+		
+		//return sorted
+		return MergeArraysIterative(MergeSortRecursive(a),MergeSortRecursive(b));
+	}
 	
 	
 	/**
@@ -281,7 +302,7 @@ public class Sorting {
 		int[] b = CopyArray(temp,a.length, temp.length);
 		
 		//return sorted
-		return MergeArrays(MergeSortRecursive(a),MergeSortRecursive(b));
+		return MergeArraysRecursive(MergeSortRecursive(a),MergeSortRecursive(b));
 	}
 	
 	/**
@@ -290,7 +311,7 @@ public class Sorting {
 	 * @param b array 2
 	 * @return merged array
 	 */
-	public int[] MergeArrays(int[] a, int[] b){
+	private int[] MergeArraysIterative(int[] a, int[] b){
 		int[] temp = new int[a.length + b.length];
 		int c1 = 0;
 		int c2 = 0;
@@ -324,7 +345,59 @@ public class Sorting {
 		
 		return temp;
 	}
-
+	
+	/**
+	 * Merges arrays and sorts them, must insert sorted arrays first,recursive
+	 * @param a array1
+	 * @param b array 2
+	 * @return merged array
+	 */
+	private int[] MergeArraysRecursive(int[] a, int[] b){
+		return MergeArraysRecursive(a,b,new int[a.length + b.length],0,0,0);
+	}
+	
+	/**
+	 * Implementation of merge arrays and sorts them, must insert sorted arrays first,recursive
+	 * @param a array1
+	 * @param b array 2
+	 * @param temp working array
+	 * @param c1 counter for a
+	 * @param c2 counter for b
+	 * @param tempCount counter for temp
+	 * @return
+	 */
+	private int[] MergeArraysRecursive(int[] a, int[] b, int[] temp, int c1, int c2, int tempCount){
+		
+		if (tempCount < temp.length){
+			if (c1 < a.length && c2 < b.length){
+				if (a[c1] < b[c2]){
+					temp[tempCount] = a[c1];
+					c1++;
+					tempCount++;
+				}
+				else if (a[c1] >= b[c2]){
+					temp[tempCount] = b[c2];
+					c2++;
+					tempCount++;
+				}
+			}
+			else if (c1 < a.length){
+				temp[tempCount] = a[c1];
+				c1++;
+				tempCount++;
+			}
+			else if (c2 < b.length){
+				temp[tempCount] = b[c2];
+				c2++;
+				tempCount++;
+			}
+			
+		}
+		else return temp;
+		
+		return MergeArraysRecursive(a, b, temp, c1, c2, tempCount);
+	}
+	
 	
 	
 	
