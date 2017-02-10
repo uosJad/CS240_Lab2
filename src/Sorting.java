@@ -399,6 +399,80 @@ public class Sorting {
 	}
 	
 	
+	public int[] QuickSortIterative(){
+		return QuickSortIterative(CopyArray(arr), 0, arr.length-1);
+	}
+	
+	private int[] QuickSortIterative(int[] temp, int lower, int upper){
+		int pivot = temp[lower+(upper-lower)/2]; // rearrange around the middle
+		
+		int eLower = lower;
+		int eUpper= upper;
+		while (eLower <= eUpper){//till index over laps
+			while (temp[eLower] < pivot){ //increase till found one that is higher
+				eLower++;
+			}
+			while (temp[eUpper] > pivot){ //decrease till one found that is lower
+				eUpper--;
+			}
+			
+			if (eLower <= eUpper){ // if lower check is less than higher check, swap
+				swap(temp, eLower, eUpper);
+				eLower++;
+				eUpper--;
+			}
+			
+		}
+
+		if (lower < eUpper)
+			QuickSortIterative(temp, lower, eUpper);
+		if (eLower < upper)
+			QuickSortIterative(temp, eLower, upper);
+		
+		return temp;
+	}
+	
+	public int[] QuickSortRecursive(){
+		return QuickSortIterative(CopyArray(arr), 0, arr.length-1);
+	}
+	
+	private int[] QuickSortRecursive(int[] temp, int lower, int upper){
+		int pivot = temp[lower+(upper-lower)/2]; // rearrange around the middle
+		
+		int eLower = lower;
+		int eUpper= upper;
+		if (eLower <= eUpper){//till index over laps
+			if (temp[eLower] < pivot){ //increase till found one that is higher
+				eLower++;
+			}
+			
+			if (temp[eUpper] > pivot){ //decrease till one found that is lower
+				eUpper--;
+			}
+			
+			if (eLower <= eUpper){ // if lower check is less than higher check, swap
+				swap(temp, eLower, eUpper);
+				eLower++;
+				eUpper--;
+			}
+			
+		}
+		else
+		{
+			if (lower < eUpper)
+				QuickSortIterative(temp, lower, eUpper);
+			if (eLower < upper)
+				QuickSortIterative(temp, eLower, upper);
+			
+			return temp;
+		}
+		
+		return QuickSortRecursive(temp, lower, upper);
+		
+	}
+		
+	
+	
 	
 	
 	/**

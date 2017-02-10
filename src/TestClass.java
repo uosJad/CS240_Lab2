@@ -7,7 +7,7 @@ public class TestClass {
 		Sorting s = new Sorting(randomArray());
 		printArray(s.toArray());
 		
-		printArray(s.MergeSortIterative());
+		printArray(s.QuickSortRecursive());
 		
 		
 		
