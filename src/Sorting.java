@@ -99,10 +99,13 @@ public class Sorting {
 		return SelectiveSortRecursive(tempArray,  currentIndex+1, currentIndex+2, -1);
 	}
 	
+	/**
+	 * iterative implementation of insertion sort
+	 * @return copy of sorted array
+	 */
 	public int[] InsertionSortIterative(){
 		int[] temp = CopyArray(arr);
 		int e;
-		
 		for (int i = 1; i < temp.length; i++){
 			e = i;
 			for (int j = i-1; j >= 0; j--){
@@ -113,12 +116,47 @@ public class Sorting {
 				else break;
 			}
 		}
-		
 		return temp;
 	}
 	
 	
+	/**
+	 * client use of recursive implementation of insertion sort
+	 * @return copy of sorted array
+	 */
+	public int[] InsertionSortRecursive(){
+		return InsertionSortRecursive(CopyArray(arr),1,0,-1);
+	}
 	
+	/**
+	 * implementation of insertion sort through recursion
+	 * @param temp array to sort
+	 * @param i counter through element
+	 * @param j counter to check
+	 * @param e current index
+	 * @return copy of sorted array
+	 */
+	private int[] InsertionSortRecursive(int[] temp, int i, int j, int e) {
+		if (i < temp.length){
+			if (e == -1){
+				e = i;
+			}
+			
+			if (j >=0){
+				if (temp[e] < temp[j]){
+					swap(temp,e,j);
+					e = j;
+				}
+				return InsertionSortRecursive(temp, i,j-1,e);
+			}
+		}
+		else{
+			return temp;
+		}
+		//if finish check
+		return InsertionSortRecursive(temp, i+1, i,-1);
+	}
+
 	/**
 	 * Swaps the values of the current array at index a and b
 	 * @param array array to swap
