@@ -156,9 +156,98 @@ public class Sorting {
 		//if finish check
 		return InsertionSortRecursive(temp, i+1, i,-1);
 	}
+	
+	/**
+	 * iterative implementation of shell sort
+	 * @return copy of sorted array
+	 */
+	public int[] ShellSortIterative(){
+		int[] temp = CopyArray(arr);
+		
+		int hib = 0;
 
+		while (hib < temp.length/2){
+			hib = hib*2+1;
+		}
+		
+		int e = hib;
+		int count = e;
+		
+		while (hib != 0){
+			
+			//if less, swap, else increase by 1. if increase is above length, refactor hib;
+			if (e - hib >= 0 && temp[e] < temp[e-hib]){
+				swap(temp,e,e-hib);
+				e = e-hib;
+			}
+			else{ // if e is < 0 or if element is not less than
+				count++;
+				e = count;
+				
+				//go down one sequence
+				if (count >= arr.length){
+					hib = (hib - 1)/2;
+					e = hib;
+					count = e;
+				}
+			}
+		}
+		
+		return temp;
+	}
 	
+	/**
+	 * client use of recursive shell sort
+	 * @return
+	 */
+	public int[] ShellSortRecursive(){
+		int[] temp = CopyArray(arr);
+		
+		int hib = 0;
+
+		while (hib < temp.length/2){
+			hib = hib*2+1;
+		}
+		
+		return ShellSortRecursive(temp, hib, hib, hib);
+		
+	}
 	
+	/**
+	 * implementation of recursive shell sort
+	 * @param temp array to sort
+	 * @param hib hibbard sequence number
+	 * @param e checking index
+	 * @param count current index
+	 * @return
+	 */
+	private int[] ShellSortRecursive(int[] temp, int hib, int e, int count){
+		
+		if (hib != 0){
+			
+			//if less, swap, else increase by 1. if increase is above length, refactor hib;
+			if (e - hib >= 0 && temp[e] < temp[e-hib]){
+				swap(temp,e,e-hib);
+				e = e-hib;
+			}
+			else{ // if e is < 0 or if element is not less than
+				count++;
+				e = count;
+				
+				//go down one sequence
+				if (count >= arr.length){
+					hib = (hib - 1)/2;
+					e = hib;
+					count = e;
+				}
+			}
+		}
+		else{
+			return temp;
+		}
+		return ShellSortRecursive(temp, hib, e, count);
+		
+	}
 	
 	/**
 	 * Swaps the values of the current array at index a and b
