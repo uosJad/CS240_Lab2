@@ -13,7 +13,17 @@ public class Sorting {
 		arr = CopyArray(a);
 	}
 	
-	private int[] CopyArray(int[] a) {
+	public int[] toArray() {
+		//@SuppressWarnings("unchecked")
+		//T[] temp = (T[])new Object[a.length];
+		int[] temp = new int[arr.length];
+		for (int i = 0; i < arr.length; i++){
+			temp[i] = arr[i];
+		}
+		return temp;
+	}
+	
+	public int[] CopyArray(int[] a) {
 		//@SuppressWarnings("unchecked")
 		//T[] temp = (T[])new Object[a.length];
 		int[] temp = new int[a.length];
@@ -31,16 +41,17 @@ public class Sorting {
 		int[] temp = CopyArray(arr);
 		
 		int least;
-		for (int i = 1; i < temp.length; i++){
+		for (int i = 0; i < temp.length; i++){
 			least = i;
 			
 			for (int j = i+1; j < temp.length; j++){
 				// check all for least, swap least to i
-				if (arr[j] < least)
+				if (temp[j] < temp[least])
 					least = j;
+				System.out.println(temp[least]);
 			}
-			if (i!=least)
-				swap(temp,i,least);
+			
+			swap(temp,i,least);
 		}
 		
 		return temp;
@@ -52,7 +63,7 @@ public class Sorting {
 	 * @return copy of sorted array
 	 */
 	public int[] SelectiveSortRecursive(){
-		return SelectiveSortRecursive(CopyArray(arr), 1, 1+1, -1);
+		return SelectiveSortRecursive(CopyArray(arr), 0, 1, -1);
 	}
 	
 	/**
@@ -69,28 +80,43 @@ public class Sorting {
 			if (least == -1){ //if on new current index, set least
 				least = currentIndex;
 			}
-			
 			if (checkingIndex < tempArray.length){ // if checking is less then length
-				if (tempArray[checkingIndex] < tempArray[currentIndex]) { //set checking to least if least
+				if (tempArray[checkingIndex] < tempArray[least]) { //set checking to least if least
 					least = checkingIndex;
 				}
-				
-				//do recursive again with checking++
-				SelectiveSortRecursive(tempArray,  currentIndex, checkingIndex+1, least);
-				
+				//do recursive again with checkingIndex++
+				return SelectiveSortRecursive(tempArray,  currentIndex, checkingIndex+1, least);
 			}
 			else //if finished checking for least (j loop)
 			{
-				if (currentIndex != least)
-					swap(tempArray, currentIndex, least);
-				
-				//assign least to -1 to get reassigned
-				SelectiveSortRecursive(tempArray,  currentIndex+1, checkingIndex+2, -1);
+				swap(tempArray, currentIndex, least);
+			}
+		}
+		else {
+			return tempArray; // executes once recursive stack completes	
+		}
+		//assign least to -1 to get reassigned
+		return SelectiveSortRecursive(tempArray,  currentIndex+1, currentIndex+2, -1);
+	}
+	
+	public int[] InsertionSortIterative(){
+		int[] temp = CopyArray(arr);
+		int e;
+		
+		for (int i = 1; i < temp.length; i++){
+			e = i;
+			for (int j = i-1; j >= 0; j--){
+				if (temp[e] < temp[j]){
+					swap(temp,e,j);
+					e = j;
+				}
+				else break;
 			}
 		}
 		
-		return tempArray; // executes once recursive stack completes	
+		return temp;
 	}
+	
 	
 	
 	/**
@@ -100,8 +126,8 @@ public class Sorting {
 	 * @param b second index
 	 */
 	private void swap(int[] array, int a, int b){
-		int temp = arr[a];
-		arr[a] = arr[b];
-		arr[b] = temp;
+		int temp = array[a];
+		array[a] = array[b];
+		array[b] = temp;
 	}
 }
